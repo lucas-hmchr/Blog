@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import BlogCard from "~/components/BlogCard.vue";
+
 const { data: posts } = await useAsyncData('blog-posts', () => {
   return queryCollection('content')
       .order('date', 'DESC')
@@ -16,24 +18,11 @@ const { data: posts } = await useAsyncData('blog-posts', () => {
     </div>
 
     <div class="grid gap-4">
-      <NuxtLink
+      <BlogCard
           v-for="post in posts"
           :key="post.path"
-          :to="post.path"
-          class="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 transition hover:border-cyan-400"
-      >
-        <p class="text-sm text-zinc-500">
-          {{ post.date }}
-        </p>
-
-        <h2 class="mt-2 text-xl font-semibold">
-          {{ post.title }}
-        </h2>
-
-        <p class="mt-2 text-zinc-400">
-          {{ post.description }}
-        </p>
-      </NuxtLink>
+          :post="post"
+      />
     </div>
   </section>
 </template>
