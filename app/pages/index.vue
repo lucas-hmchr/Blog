@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const { data: posts } = await useAsyncData('blog-posts', () => {
+  return queryCollection('content').limit(3)
+      .order('date', 'DESC')
+      .all()
+})
+
+</script>
 <template>
   <section class="space-y-8">
     <div class="space-y-4">
@@ -14,12 +22,14 @@
         die ich beim Bauen lerne.
       </p>
 
-      <NuxtLink
-          to="/blog"
-          class="inline-flex rounded-xl bg-cyan-400 px-5 py-3 font-medium text-zinc-950 hover:bg-cyan-300"
-      >
+      <BaseButton to="/blog/" variant="primary">
         Zum Blog
-      </NuxtLink>
+      </BaseButton>
+    </div>
+
+    <div class="grid gap-4">
+      <h2 class="text-3xl">Neuste Beiträge</h2>
+      <BlogCard v-for="post in posts" :key="post.id" :post="post" />
     </div>
   </section>
 </template>
